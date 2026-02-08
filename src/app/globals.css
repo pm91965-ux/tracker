@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7e7ce; /* Champagne */
+  --foreground: #171717; /* Keeping original foreground for text on light bg */
+  --accent: #800020; /* Your accent color */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #2a1a0d; /* A darker, complementary background for dark mode */
+    --foreground: #f7e7ce; /* Champagne as foreground in dark mode */
+    --accent: #800020; /* Your accent color */
+  }
+}
+
+body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* Force accent color for any elements that might not be picking it up */
+button,
+a.text-rubyred,
+.text-rubyred,
+.bg-rubyred,
+.text-forestgreen {
+  color: var(--accent) !important;
+}
+
+.text-forestgreen {
+  color: #228B22 !important; /* Direct color for income */
+}

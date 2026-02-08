@@ -1,0 +1,205 @@
+{
+  "recurring": [
+    {
+      "id": "1770456472933",
+      "name": "Salary",
+      "amount": 5870,
+      "type": "recurring",
+      "day": 20,
+      "startDate": "2026-01-20"
+    },
+    {
+      "id": "1770454264551",
+      "name": "Insurance",
+      "amount": -610,
+      "day": 7,
+      "type": "recurring",
+      "startDate": "2026-02-07"
+    },
+    {
+      "id": "1770456253142",
+      "name": "Rent",
+      "amount": -2000,
+      "day": 7,
+      "type": "recurring",
+      "startDate": "2026-02-07"
+    },
+    {
+      "id": "1770465707563",
+      "name": "Restaurants",
+      "amount": -400,
+      "type": "recurring",
+      "day": 21,
+      "startDate": "2026-01-21"
+    },
+    {
+      "id": "1770466809324",
+      "name": "Psychologist ",
+      "amount": -81,
+      "type": "recurring",
+      "day": 7,
+      "startDate": "2026-02-07"
+    },
+    {
+      "id": "1770466961182",
+      "name": "Savings ",
+      "amount": -700,
+      "day": 20,
+      "startDate": "2026-01-20",
+      "type": "recurring"
+    },
+    {
+      "id": "1770464963267",
+      "name": "Beauty",
+      "amount": -80,
+      "day": 7,
+      "type": "recurring",
+      "startDate": "2026-02-07"
+    }
+  ],
+  "monthlyOverrides": [],
+  "oneOffs": [
+    {
+      "id": "1770464485795",
+      "name": "Marko Present",
+      "amount": -152,
+      "date": "",
+      "type": "one-off"
+    },
+    {
+      "id": "1770456305490",
+      "name": "Trip to Daryna",
+      "amount": -200,
+      "date": "",
+      "type": "one-off"
+    },
+    {
+      "id": "1770455262639",
+      "name": "Nails",
+      "amount": -100,
+      "date": "",
+      "type": "one-off"
+    },
+    {
+      "id": "1770464765494",
+      "name": "Coffee",
+      "amount": -140,
+      "date": "",
+      "type": "one-off"
+    },
+    {
+      "id": "1770464831912",
+      "name": "coffee",
+      "amount": -150,
+      "date": "",
+      "type": "one-off"
+    },
+    {
+      "id": "1770549349643",
+      "name": "London visa ",
+      "amount": -100,
+      "date": "2026-02-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770549449287",
+      "name": "Marko’s BD ",
+      "amount": -90,
+      "date": "2026-02-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770549871915",
+      "name": "Make up ",
+      "amount": -330,
+      "date": "2026-02-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770551159861",
+      "name": "London visa",
+      "amount": -140,
+      "date": "2026-02-01",
+      "type": "one-off"
+    },
+    {
+      "id": "1770551372509",
+      "name": "Marko bd ",
+      "amount": -200,
+      "date": "2026-03-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770552674908",
+      "name": "K Bd",
+      "amount": -60,
+      "date": "2026-02-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770552789756",
+      "name": "Food",
+      "amount": -600,
+      "date": "2026-03-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770553760549",
+      "name": "Anait bd ",
+      "amount": -50,
+      "date": "2026-02-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770467143375",
+      "name": "Travel savings - Milan + Gstaad ",
+      "amount": -600,
+      "date": "2026-02-08",
+      "type": "one-off"
+    },
+    {
+      "id": "1770553907060",
+      "name": "Travel (Milano + Gstaad) ",
+      "amount": -600,
+      "date": "2026-02-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770554301025",
+      "name": "Dads bd",
+      "amount": -100,
+      "date": "2026-02-20",
+      "type": "one-off"
+    },
+    {
+      "id": "1770558298710",
+      "name": "SBB",
+      "amount": -2400,
+      "date": "2026-03-20",
+      "type": "one-off"
+    }
+  ],
+  "overrides": [
+    {
+      "id": "1770558946443",
+      "recurringItemId": "1770558934458",
+      "originalDate": "2026-03-01",
+      "newAmount": 1100,
+      "type": "override"
+    },
+    {
+      "id": "1770560974012",
+      "recurringItemId": "1770456472933",
+      "originalDate": "2026-02-20",
+      "newAmount": 5871,
+      "type": "override"
+    },
+    {
+      "id": "1770561036530",
+      "recurringItemId": "1770466809324",
+      "originalDate": "2026-02-07",
+      "newAmount": -80,
+      "type": "override"
+    }
+  ]
+}
