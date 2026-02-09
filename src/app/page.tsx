@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Calendar, DollarSign, Repeat, Trash2, Edit } from 'lucide-react';
 import { MonthCycle, RecurringItem, OneOffItem, MonthlySummary, MonthlyOverviewData } from '@/lib/types';
 import { useSession } from "next-auth/react";
@@ -59,81 +59,50 @@ export default function Home() {
     originalDate?: string; // Track original date for overrides
   } | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = async (isMounted: React.MutableRefObject<boolean>) => {
     if (viewMode === 'cycle') {
       const res = await fetch(`/api/finance?date=${refDate}`);
       const data = await res.json();
-      setCycle(data.cycle);
-      // Populate allManagedItems to serve as source for edit/delete operations on master records
-      setAllManagedItems([
-        ...data.recurring,
-        ...data.oneOffs
-      ].sort((a, b) => {
-        if (a.type === 'recurring' && b.type !== 'recurring') return -1;
-        if (b.type === 'recurring' && a.type !== 'recurring') return 1;
+      if (isMounted.current) {
+        setCycle(data.cycle);
+        setAllManagedItems([
+          ...data.recurring,
+          ...data.oneOffs
+        ].sort((a, b) => {
+          if (a.type === 'recurring' && b.type !== 'recurring') return -1;
+          if (b.type === 'recurring' && a.type !== 'recurring') return 1;
   
-        if (a.type === 'recurring' && b.type === 'recurring') {
-          const aStart = (a as RecurringItem).startDate || '2000-01-01'; 
-          const bStart = (b as RecurringItem).startDate || '2000-01-01';
-          if (aStart !== bStart) return aStart.localeCompare(bStart);
-          // Day is now derived from startDate, so sorting by day after startDate
-          return (new Date(aStart).getDate()) - (new Date(bStart).getDate());
-        } else {
-          return new Date((a as OneOffItem).date).getTime() - new Date((b as OneOffItem).date).getTime();
-        }
-      }));
+          if (a.type === 'recurring' && b.type === 'recurring') {
+            const aStart = (a as RecurringItem).startDate || '2000-01-01'; 
+            const bStart = (b as RecurringItem).startDate || '2000-01-01';
+            if (aStart !== bStart) return aStart.localeCompare(bStart);
+            return (new Date(aStart).getDate()) - (new Date(bStart).getDate());
+          } else {
+            return new Date((a as OneOffItem).date).getTime() - new Date((b as OneOffItem).date).getTime();
+          }
+        }));
+      }
     } else if (viewMode === 'monthly') {
       const res = await fetch(`/api/finance/monthly-summary?year=${overviewYear}`);
       const data = await res.json();
-      setMonthlyOverview(data);
+      if (isMounted.current) setMonthlyOverview(data);
     }
   };
 
-  useEffect(() => {
-    let isMounted = true; // Flag to track if component is mounted
+  const isMounted = useRef(true); // Create a ref to track mount status
 
-    const fetchDataOnMount = async () => {
-      if (status === "authenticated") {
-        if (viewMode === 'cycle') {
-          const res = await fetch(`/api/finance?date=${refDate}`);
-          const data = await res.json();
-          if (isMounted && status === "authenticated") {
-            setCycle(data.cycle);
-            if (isMounted && status === "authenticated") {
-              setAllManagedItems([
-              ...data.recurring,
-              ...data.oneOffs
-            ].sort((a, b) => {
-              if (a.type === 'recurring' && b.type !== 'recurring') return -1;
-              if (b.type === 'recurring' && a.type !== 'recurring') return 1;
-        
-              if (a.type === 'recurring' && b.type === 'recurring') {
-                const aStart = (a as RecurringItem).startDate || '2000-01-01'; 
-                const bStart = (b as RecurringItem).startDate || '2000-01-01';
-                if (aStart !== bStart) return aStart.localeCompare(bStart);
-                return (new Date(aStart).getDate()) - (new Date(bStart).getDate());
-              } else {
-                return new Date((a as OneOffItem).date).getTime() - new Date((b as OneOffItem).date).getTime();
-              }
-            }));
-          }
-        } else if (viewMode === 'monthly') {
-          const res = await fetch(`/api/finance/monthly-summary?year=${overviewYear}`);
-          const data = await res.json();
-          if (isMounted && status === "authenticated") setMonthlyOverview(data);
-        }
-      }
-    };
+  useEffect(() => {
+    isMounted.current = true; // Set to true on mount
 
     // Only fetch data if authenticated
     if (status === "authenticated") {
-      fetchDataOnMount();
+      fetchData(isMounted); // Pass the ref to fetchData
     }
 
     return () => {
-      isMounted = false; // Set flag to false when component unmounts
+      isMounted.current = false; // Set to false on unmount
     };
-  }, [refDate, viewMode, overviewYear, status, setAllManagedItems]);
+  }, [refDate, viewMode, overviewYear, status]);
 
   const changeMonth = (offset: number) => {
     const d = new Date(refDate);
