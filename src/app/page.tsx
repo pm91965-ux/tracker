@@ -90,11 +90,49 @@ export default function Home() {
   };
 
   useEffect(() => {
+    let isMounted = true; // Flag to track if component is mounted
+
+    const fetchDataOnMount = async () => {
+      if (status === "authenticated") {
+        if (viewMode === 'cycle') {
+          const res = await fetch(`/api/finance?date=${refDate}`);
+          const data = await res.json();
+          if (isMounted) {
+            setCycle(data.cycle);
+            setAllManagedItems([
+              ...data.recurring,
+              ...data.oneOffs
+            ].sort((a, b) => {
+              if (a.type === 'recurring' && b.type !== 'recurring') return -1;
+              if (b.type === 'recurring' && a.type !== 'recurring') return 1;
+        
+              if (a.type === 'recurring' && b.type === 'recurring') {
+                const aStart = (a as RecurringItem).startDate || '2000-01-01'; 
+                const bStart = (b as RecurringItem).startDate || '2000-01-01';
+                if (aStart !== bStart) return aStart.localeCompare(bStart);
+                return (new Date(aStart).getDate()) - (new Date(bStart).getDate());
+              } else {
+                return new Date((a as OneOffItem).date).getTime() - new Date((b as OneOffItem).date).getTime();
+              }
+            }));
+          }
+        } else if (viewMode === 'monthly') {
+          const res = await fetch(`/api/finance/monthly-summary?year=${overviewYear}`);
+          const data = await res.json();
+          if (isMounted) setMonthlyOverview(data);
+        }
+      }
+    };
+
     // Only fetch data if authenticated
     if (status === "authenticated") {
-      fetchData();
+      fetchDataOnMount();
     }
-  }, [refDate, viewMode, overviewYear, status]);
+
+    return () => {
+      isMounted = false; // Set flag to false when component unmounts
+    };
+  }, [refDate, viewMode, overviewYear, status, setAllManagedItems]);
 
   const changeMonth = (offset: number) => {
     const d = new Date(refDate);
