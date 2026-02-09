@@ -135,7 +135,7 @@ export default function Home() {
     });
     setShowAddItemForm(false);
     setNewItemForm({ name: '', amount: '', date: new Date().toISOString().split('T')[0], isRecurring: false, startDate: new Date().toISOString().split('T')[0] }); // Removed day from initial state
-    fetchData(); // Refresh data
+    fetchData(isMounted); // Refresh data
   };
 
   const handleUpdateItem = async () => {
@@ -162,7 +162,7 @@ export default function Home() {
     });
     setEditingItemId(null); // Exit edit mode
     setEditForm(null); // Clear edit form
-    fetchData(); // Refresh data
+    fetchData(isMounted); // Refresh data
   };
 
   const handleUpdateOverride = async () => {
@@ -181,14 +181,14 @@ export default function Home() {
     });
     setEditingItemId(null);
     setEditForm(null);
-    fetchData();
+    fetchData(isMounted);
   };
 
   const handleDeleteItem = async (type: 'recurring' | 'one-off', id: string) => {
     await fetch(`/api/finance?type=${type}&id=${id}`, {
       method: 'DELETE',
     });
-    fetchData(); // Refresh data after deletion
+    fetchData(isMounted); // Refresh data after deletion
   };
 
   if (viewMode === 'cycle' && !cycle) return <div className="p-10 text-gray-900">Loading...</div>;
