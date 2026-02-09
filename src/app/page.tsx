@@ -97,9 +97,10 @@ export default function Home() {
         if (viewMode === 'cycle') {
           const res = await fetch(`/api/finance?date=${refDate}`);
           const data = await res.json();
-          if (isMounted) {
+          if (isMounted && status === "authenticated") {
             setCycle(data.cycle);
-            setAllManagedItems([
+            if (isMounted && status === "authenticated") {
+              setAllManagedItems([
               ...data.recurring,
               ...data.oneOffs
             ].sort((a, b) => {
@@ -119,7 +120,7 @@ export default function Home() {
         } else if (viewMode === 'monthly') {
           const res = await fetch(`/api/finance/monthly-summary?year=${overviewYear}`);
           const data = await res.json();
-          if (isMounted) setMonthlyOverview(data);
+          if (isMounted && status === "authenticated") setMonthlyOverview(data);
         }
       }
     };
